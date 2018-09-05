@@ -16,7 +16,7 @@ tag = Tag()
 for path_folder in only_folders_from_root_path:
     path_files = root_path + path_folder
     only_files = [f for f in listdir(
-        path_files) if isfile(join(path_files, f))]
+        path_files) if isfile(join(path_files, f)) and f.endswith('.mp3')]
     for path in only_files:
         tag.parse(path_files + "/" + path)
         item = PyRSS2Gen.RSSItem(
