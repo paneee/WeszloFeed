@@ -48,6 +48,7 @@ for path_folder in only_folders_from_root_path:
         path_files) if isfile(join(path_files, f))]
     for path in only_files:
         tag.parse(path_files + "/" + path) 
+        
         item = fg.add_entry()
         item.id("https://www.simx.mobi/weszlo/" + path_folder + "/" + path)
         item.title(tag.title)
@@ -55,13 +56,13 @@ for path_folder in only_folders_from_root_path:
         item.podcast.itunes_subtitle(tag.artist + " " + tag.title)
         item.podcast.itunes_author(tag.artist)
         item.enclosure("https://www.simx.mobi/weszlo/" + path_folder + "/" + path, 0, 'audio/mpeg')
+        
         audio = MP3(path_files + "/" + path)  
-        #test = str(datetime.timedelta(seconds=audio.info.length))
-        item.podcast.itunes_duration("5:65")
+        normTime = time.strftime('%H:%M:%S', time.gmtime(audio.info.length))
+        item.podcast.itunes_duration(normTime)
+        
         dat = creation_date(path_files + "/" + path) 
         item.pubdate(str(datetime.datetime.fromtimestamp(dat)) + "-0000")
         items.append(item)
-
-
 
 fg.rss_file('./feed.xml', pretty=True)
