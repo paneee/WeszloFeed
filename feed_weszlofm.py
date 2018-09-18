@@ -2,7 +2,7 @@ import datetime
 import PyRSS2Gen
 import os
 from os import listdir
-from os.path import isfile, isdir, join
+from os.path import isfile, isdir, join, islink
 from eyed3.id3 import Tag
 import unidecode
 
@@ -16,7 +16,7 @@ tag = Tag()
 for path_folder in only_folders_from_root_path:
     path_files = root_path + path_folder
     only_files = [f for f in listdir(
-        path_files) if isfile(join(path_files, f)) and f.endswith('.mp3')]
+        path_files) if isfile(join(path_files, f)) and not islink(join(path_files, f))]
     for path in only_files:
         tag.parse(path_files + "/" + path)
         item = PyRSS2Gen.RSSItem(
@@ -35,4 +35,4 @@ rss = PyRSS2Gen.RSS2(
     lastBuildDate=datetime.datetime.now(),
     items=items)
 
-rss.write_xml(open("pyrss2gen.xml", "w"))
+rss.write_xml(open("feed.xml", "w"))
